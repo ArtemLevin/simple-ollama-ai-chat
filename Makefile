@@ -1,5 +1,5 @@
 UV ?= uv
-APP ?= ollama_gui_logged.py
+APP ?= ollama_gui_clipboard.py
 MODEL ?= qwen3.5:9b
 INDEX ?= https://pypi.org/simple
 LOG_LEVEL ?= INFO
@@ -23,7 +23,7 @@ help: ## Показать доступные команды
 	@echo "  make clear-logs          Удалить созданные журналы"
 	@echo "  make doctor              Проверить Python, Tkinter, Ollama и модель"
 	@echo "  make check               Компиляция, тесты и статическая проверка"
-	@echo "  make test                Запустить unit-тесты логирования"
+	@echo "  make test                Запустить unit-тесты"
 	@echo "  make pull-model          Скачать модель MODEL=$(MODEL)"
 	@echo "  make models              Показать локальные модели Ollama"
 	@echo "  make serve               Запустить сервер Ollama"
@@ -71,19 +71,19 @@ doctor: ## Проверить локальное окружение и инте�
 check: compile lint test ## Выполнить безопасные проверки проекта
 
 compile: ## Проверить синтаксис Python
-	$(UV) run python -m py_compile ollama_gui_chat.py ollama_gui_logged.py
+	$(UV) run python -m py_compile ollama_gui_chat.py ollama_gui_logged.py ollama_gui_clipboard.py
 
 lint: ## Запустить Ruff
-	$(UV) run ruff check ollama_gui_chat.py ollama_gui_logged.py tests
+	$(UV) run ruff check ollama_gui_chat.py ollama_gui_logged.py ollama_gui_clipboard.py tests
 
-test: ## Запустить unit-тесты логирования
+test: ## Запустить unit-тесты
 	$(UV) run python -m unittest discover -s tests -v
 
 format: ## Отформатировать Python-код
-	$(UV) run ruff format ollama_gui_logged.py tests
+	$(UV) run ruff format ollama_gui_logged.py ollama_gui_clipboard.py tests
 
 format-check: ## Проверить форматирование без изменения файлов
-	$(UV) run ruff format --check ollama_gui_logged.py tests
+	$(UV) run ruff format --check ollama_gui_logged.py ollama_gui_clipboard.py tests
 
 models: ## Показать загруженные модели
 	ollama list
