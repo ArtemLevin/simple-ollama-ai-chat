@@ -1,6 +1,6 @@
 # Ollama GUI Chat
 
-Desktop-интерфейс для локальных моделей Ollama с предварительной настройкой модели, потоковым выводом и расширенной диагностикой.
+Desktop-интерфейс для локальных моделей Ollama с предварительной настройкой модели, потоковым выводом, системным буфером обмена и расширенной диагностикой.
 
 ## Возможности
 
@@ -9,6 +9,9 @@ Desktop-интерфейс для локальных моделей Ollama с п
 - настройка `temperature`, `top_p`, `top_k`, `min_p` и штрафов повторения;
 - размер контекста, лимит ответа, `seed`, `keep_alive` и режим рассуждения;
 - потоковая генерация, остановка ответа, очистка контекста и экспорт диалога;
+- копирование выделенного фрагмента или всего диалога;
+- вырезание, копирование, вставка и выделение всего текста в поле ввода;
+- контекстные меню по правой кнопке мыши и стандартные Windows-сочетания клавиш;
 - файловое и консольное логирование с ротацией;
 - идентификатор сессии и отдельный идентификатор генерации;
 - трассировка фоновых потоков, подключений, запросов и ошибок Tkinter;
@@ -34,7 +37,7 @@ python -c "import tkinter; print(tkinter.TclVersion)"
 ```powershell
 uv sync --default-index https://pypi.org/simple
 ollama pull qwen3.5:9b
-uv run python ollama_gui_logged.py
+uv run python ollama_gui_clipboard.py
 ```
 
 Через Makefile:
@@ -45,6 +48,21 @@ make pull-model
 make doctor
 make run
 ```
+
+## Копирование и вставка
+
+В поле ввода и системном промпте доступны:
+
+| Действие | Сочетание |
+|---|---|
+| Копировать | `Ctrl+C` или `Ctrl+Insert` |
+| Вставить | `Ctrl+V` или `Shift+Insert` |
+| Вырезать | `Ctrl+X` или `Shift+Delete` |
+| Выделить всё | `Ctrl+A` |
+
+В области диалога доступны копирование выделенного текста, выделение всего текста и команда **«Копировать весь диалог»**. Для всех текстовых областей предусмотрено контекстное меню по правой кнопке мыши.
+
+Обработка физических Windows-клавиш позволяет сочетаниям работать и при включённой русской раскладке.
 
 ## Расширенное логирование
 
@@ -98,8 +116,8 @@ make check
 Команда выполняет:
 
 ```text
-python -m py_compile ollama_gui_chat.py ollama_gui_logged.py
-ruff check ollama_gui_chat.py ollama_gui_logged.py tests
+python -m py_compile ollama_gui_chat.py ollama_gui_logged.py ollama_gui_clipboard.py
+ruff check ollama_gui_chat.py ollama_gui_logged.py ollama_gui_clipboard.py tests
 python -m unittest discover -s tests -v
 ```
 
