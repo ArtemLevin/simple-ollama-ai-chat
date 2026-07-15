@@ -1,0 +1,27 @@
+[project]
+name = "ollama-gui-chat"
+version = "0.1.0"
+description = "Desktop GUI chat for local Ollama models with advanced generation settings"
+readme = "README.md"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+    "ollama>=0.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0",
+]
+
+[tool.uv]
+# Tkinter relies on Tcl/Tk bundled with the regular Windows Python installer.
+# This prevents uv from silently switching the project to a managed interpreter.
+python-preference = "only-system"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
