@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+.idea/
+.vscode/
+*.log
+ollama_chat_*.md
+ollama_chat_*.json
+ollama_chat_*.txt
+.gigaide
