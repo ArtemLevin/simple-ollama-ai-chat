@@ -6,6 +6,13 @@ on:
       - agent/extended-logging
     paths:
       - .github/workflows/apply-upload.yml
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions:
   contents: write
