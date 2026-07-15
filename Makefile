@@ -2,11 +2,12 @@ UV ?= uv
 PYTHON ?= python
 APP ?= ollama_gui_chat.py
 MODEL ?= qwen3.5:9b
+INDEX ?= https://pypi.org/simple
 
 .DEFAULT_GOAL := help
 
 .PHONY: help setup sync lock run run-gui doctor check compile lint format format-check \
-        models pull-model serve tree upgrade export-requirements reset
+        models pull-model serve tree upgrade export-requirements reset repair-index
 
 help: ## Показать доступные команды
 	@echo "Ollama GUI Chat — команды проекта"
@@ -19,7 +20,8 @@ help: ## Показать доступные команды
 	@echo "  make pull-model          Скачать модель MODEL=$(MODEL)"
 	@echo "  make models              Показать локальные модели Ollama"
 	@echo "  make serve               Запустить сервер Ollama"
-	@echo "  make lock                Обновить uv.lock"
+	@echo "  make lock                Обновить uv.lock через публичный PyPI"
+	@echo "  make repair-index        Исправить lock-файл со служебным индексом"
 	@echo "  make upgrade             Обновить зависимости в допустимых пределах"
 	@echo "  make format              Форматировать Python-код"
 	@echo "  make export-requirements Экспортировать requirements.txt из uv.lock"
@@ -29,10 +31,10 @@ help: ## Показать доступные команды
 setup: sync ## Первичная настройка проекта
 
 sync: ## Синхронизировать .venv с pyproject.toml и uv.lock
-	$(UV) sync
+	$(UV) sync --default-index $(INDEX)
 
 lock: ## Пересобрать lock-файл без принудительного обновления версий
-	$(UV) lock
+	$(UV) lock --default-index $(INDEX)
 
 run: ## Запустить приложение
 	$(UV) run python $(APP)
@@ -75,11 +77,14 @@ tree: ## Показать дерево зависимостей
 	$(UV) tree
 
 upgrade: ## Обновить lock-файл и окружение
-	$(UV) lock --upgrade
-	$(UV) sync
+	$(UV) lock --upgrade --default-index $(INDEX)
+	$(UV) sync --default-index $(INDEX)
 
 export-requirements: ## Создать совместимый requirements.txt
 	$(UV) export --format requirements-txt --no-hashes --output-file requirements.txt
 
 reset: ## Переустановить зависимости в текущем окружении
-	$(UV) sync --reinstall
+	$(UV) sync --reinstall --default-index $(INDEX)
+
+repair-index: ## Пересоздать lock-файл через публичный PyPI (Windows PowerShell)
+	powershell -NoProfile -ExecutionPolicy Bypass -File ./repair_uv.ps1
