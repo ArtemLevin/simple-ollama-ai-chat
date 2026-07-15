@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import logging
 import sys
 import tempfile
@@ -21,7 +22,7 @@ if "ollama" not in sys.modules:
     module.ResponseError = ResponseError
     sys.modules["ollama"] = module
 
-import ollama_gui_logged as app
+app = importlib.import_module("ollama_gui_logged")
 
 
 class LoggingTests(unittest.TestCase):
