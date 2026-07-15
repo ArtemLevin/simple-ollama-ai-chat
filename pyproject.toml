@@ -1,7 +1,7 @@
 [project]
 name = "ollama-gui-chat"
-version = "0.1.0"
-description = "Desktop GUI chat for local Ollama models with advanced generation settings"
+version = "0.2.0"
+description = "Desktop GUI chat for local Ollama models with advanced settings and rotating diagnostics logs"
 readme = "README.md"
 requires-python = ">=3.11,<3.15"
 dependencies = [
